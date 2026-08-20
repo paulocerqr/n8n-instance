@@ -1,0 +1,39 @@
+services:
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:latest
+    container_name: n8n
+    restart: unless-stopped
+
+    environment:
+      TZ: America/Sao_Paulo
+      GENERIC_TIMEZONE: America/Sao_Paulo
+
+      N8N_HOST: n8n.utileasy.com.br
+      N8N_PORT: 5678
+      N8N_PROTOCOL: https
+
+      N8N_EDITOR_BASE_URL: https://n8n.utileasy.com.br/
+      WEBHOOK_URL: https://n8n.utileasy.com.br/
+
+      N8N_PROXY_HOPS: "1"
+
+      N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: "true"
+      N8N_RUNNERS_ENABLED: "true"
+
+    expose:
+      - "5678"
+
+    volumes:
+      - n8n_data:/home/node/.n8n
+
+    networks:
+      - reverse_proxy
+
+volumes:
+  n8n_data:
+    name: n8n_data
+
+networks:
+  reverse_proxy:
+    external: true
+    name: reverse_proxy
